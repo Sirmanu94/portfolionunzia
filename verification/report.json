@@ -1,0 +1,76 @@
+{
+  "sizes": [
+    {
+      "width": 320,
+      "height": 568,
+      "scrollWidth": 320,
+      "overflow": false
+    },
+    {
+      "width": 360,
+      "height": 800,
+      "scrollWidth": 360,
+      "overflow": false
+    },
+    {
+      "width": 375,
+      "height": 812,
+      "scrollWidth": 375,
+      "overflow": false
+    },
+    {
+      "width": 390,
+      "height": 844,
+      "scrollWidth": 390,
+      "overflow": false
+    },
+    {
+      "width": 430,
+      "height": 932,
+      "scrollWidth": 430,
+      "overflow": false
+    },
+    {
+      "width": 768,
+      "height": 1024,
+      "scrollWidth": 768,
+      "overflow": false
+    },
+    {
+      "width": 820,
+      "height": 1180,
+      "scrollWidth": 820,
+      "overflow": false
+    },
+    {
+      "width": 1024,
+      "height": 900,
+      "scrollWidth": 1024,
+      "overflow": false
+    },
+    {
+      "width": 1280,
+      "height": 900,
+      "scrollWidth": 1280,
+      "overflow": false
+    },
+    {
+      "width": 1440,
+      "height": 960,
+      "scrollWidth": 1440,
+      "overflow": false
+    },
+    {
+      "width": 1920,
+      "height": 1080,
+      "scrollWidth": 1920,
+      "overflow": false
+    }
+  ],
+  "video": {
+    "width": 720,
+    "height": 1280,
+    "duration": 29.000998
+  },
+  "errors": []
+}
