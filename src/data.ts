@@ -41,7 +41,7 @@ export const projects: Project[] = [
     note: 'Anche la tecnica ha una storia da raccontare.',
     instagram: 'https://www.instagram.com/iperboat?stkn=eHgydTdrazU0OHJ4',
     feed: 'iperboat-feed',
-    media: [{ id: 'iperboat-graphic', label: 'Sei un rivenditore?', image: true }, { id: 'video-2', label: 'La voce dell’azienda' }],
+    media: [{ id: 'iperboat-risposta', label: 'Risposta' }, { id: 'video-2', label: 'La voce dell’azienda' }],
   },
   {
     id: 'arma', name: 'Arma Contact', category: 'PEOPLE & CORPORATE',
