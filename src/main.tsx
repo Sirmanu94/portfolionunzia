@@ -283,9 +283,78 @@ function WallTile({ name, category, image, className, href }: { name: string; ca
   return <Reveal className={'wall-tile ' + className} variant="scale"><a href={destination} target="_blank" rel="noopener noreferrer" aria-label={href ? `Instagram di ${name}` : `Apri la grafica ${name}`}><img src={asset + image + '.webp'} alt={'Contenuti social di ' + name} loading="lazy" width="930" height="827" /><span className="wall-tile-shade" /><span className="wall-tile-copy"><span>{category}</span><strong>{name}</strong><small>{href ? 'Instagram' : 'Graphic content'} ↗</small></span></a></Reveal>;
 }
 
+const perspectiveSlides = [
+  { image: 'gorilla1', name: 'Gorillas Burger', category: 'FOOD / SOCIAL CONTENT', href: moreSocial[0].instagram, alt: 'Contenuto social di Gorillas Burger' },
+  { image: 'gorilla2', name: 'Gorillas Burger', category: 'FOOD / SOCIAL CONTENT', href: moreSocial[0].instagram, alt: 'Direzione creativa social per Gorillas Burger' },
+  { image: 'postural1', name: 'Postural Bed', category: 'GRAPHIC CONTENT', alt: 'Contenuto grafico di Postural Bed' },
+  { image: 'arma1', name: 'Arma Contact', category: 'CORPORATE / SOCIAL VIDEO', href: 'https://www.instagram.com/armacontact?stkn=MXdnanFybHNzNjFodg==', alt: 'Contenuto corporate di Arma Contact' },
+  { image: 'arma2', name: 'Arma Contact', category: 'CORPORATE / SOCIAL VIDEO', href: 'https://www.instagram.com/armacontact?stkn=MXdnanFybHNzNjFodg==', alt: 'Direzione social video per Arma Contact' },
+];
+
+function PerspectivesCarousel() {
+  const trackRef = useRef<HTMLDivElement>(null);
+  const drag = useRef({ active: false, moved: false, startX: 0, scrollLeft: 0 });
+  const [active, setActive] = useState(0);
+  const reduced = useReducedMotion();
+
+  const goTo = (index: number) => {
+    const track = trackRef.current;
+    if (!track) return;
+    const cards = [...track.querySelectorAll<HTMLElement>('.perspective-card')];
+    const next = (index + cards.length) % cards.length;
+    track.scrollTo({ left: cards[next].offsetLeft - track.offsetLeft, behavior: reduced ? 'auto' : 'smooth' });
+    setActive(next);
+  };
+
+  const updateActive = () => {
+    const track = trackRef.current;
+    if (!track) return;
+    const cards = [...track.querySelectorAll<HTMLElement>('.perspective-card')];
+    const index = cards.reduce((closest, card, i) => Math.abs(card.offsetLeft - track.offsetLeft - track.scrollLeft) < Math.abs(cards[closest].offsetLeft - track.offsetLeft - track.scrollLeft) ? i : closest, 0);
+    setActive(index);
+  };
+
+  const onPointerDown = (event: React.PointerEvent<HTMLDivElement>) => {
+    if (event.pointerType === 'touch') return;
+    const track = trackRef.current;
+    if (!track) return;
+    drag.current = { active: true, moved: false, startX: event.clientX, scrollLeft: track.scrollLeft };
+    track.setPointerCapture(event.pointerId);
+    track.classList.add('is-dragging');
+  };
+
+  const onPointerMove = (event: React.PointerEvent<HTMLDivElement>) => {
+    const track = trackRef.current;
+    if (!track || !drag.current.active) return;
+    const distance = event.clientX - drag.current.startX;
+    if (Math.abs(distance) > 5) drag.current.moved = true;
+    track.scrollLeft = drag.current.scrollLeft - distance;
+  };
+
+  const endDrag = (event: React.PointerEvent<HTMLDivElement>) => {
+    const track = trackRef.current;
+    if (!track || !drag.current.active) return;
+    drag.current.active = false;
+    track.releasePointerCapture(event.pointerId);
+    track.classList.remove('is-dragging');
+    window.setTimeout(updateActive, 80);
+  };
+
+  return <Reveal className="perspectives-carousel">
+    <div className="carousel-heading"><div><span className="carousel-kicker">SELECTED SNAPSHOTS</span><p>Dettagli, formati e direzioni creative.</p></div><div className="carousel-controls"><span aria-live="polite"><b>{String(active + 1).padStart(2, '0')}</b> / {String(perspectiveSlides.length).padStart(2, '0')}</span><button type="button" onClick={() => goTo(active - 1)} aria-label="Contenuto precedente">←</button><button type="button" onClick={() => goTo(active + 1)} aria-label="Contenuto successivo">→</button></div></div>
+    <div ref={trackRef} className="perspectives-track" role="region" aria-label="Selected snapshots" tabIndex={0} onScroll={updateActive} onKeyDown={event => { if (event.key === 'ArrowLeft') { event.preventDefault(); goTo(active - 1); } if (event.key === 'ArrowRight') { event.preventDefault(); goTo(active + 1); } }} onPointerDown={onPointerDown} onPointerMove={onPointerMove} onPointerUp={endDrag} onPointerCancel={endDrag} onClickCapture={event => { if (drag.current.moved) { event.preventDefault(); event.stopPropagation(); drag.current.moved = false; } }}>
+      {perspectiveSlides.map((slide, index) => {
+        const content = <><img src={asset + slide.image + '.webp'} alt={slide.alt} loading={index === 0 ? 'eager' : 'lazy'} width="1080" height="1350" draggable="false" /><span className="perspective-shade" /><span className="perspective-copy"><span>{slide.category}</span><strong>{slide.name}</strong><small>{slide.href ? 'Instagram ↗' : 'Selected content'}</small></span></>;
+        return <article className="perspective-card" key={slide.image}>{slide.href ? <a href={slide.href} target="_blank" rel="noopener noreferrer" aria-label={`Apri ${slide.name} su Instagram, snapshot ${index + 1}`}>{content}</a> : <div>{content}</div>}</article>;
+      })}
+    </div>
+  </Reveal>;
+}
+
 function MoreWork() {
   return <section className="more-work section wrap"><Reveal className="section-label"><span>ALTRI LINGUAGGI, ALTRE STORIE</span><span>MORE WORK — SELECTED CONTENT</span></Reveal><Reveal className="more-heading"><h2 className="display">More <em>perspectives.</em></h2><p>Brand diversi, la stessa attenzione alla coerenza visiva e al messaggio.</p></Reveal>
-    <div className="creative-wall"><WallTile name="Gorillas Burger" category="FOOD / SOCIAL CONTENT" image="gorillas-feed" className="wall-gorillas" href={moreSocial[0].instagram} /><WallTile name="Serra Carni" category="FOOD / RETAIL SOCIAL CONTENT" image="serra-feed" className="wall-serra" href={moreSocial[1].instagram} /><WallTile name="Letizia Garden" category="LIFESTYLE / GRAPHIC CONTENT" image="letizia" className="wall-letizia" /><WallTile name="Postural Bed" category="LIFESTYLE / GRAPHIC CONTENT" image="postural" className="wall-postural" /></div>
+    <div className="creative-wall"><WallTile name="Gorillas Burger" category="FOOD / SOCIAL CONTENT" image="gorillas-feed" className="wall-gorillas" href={moreSocial[0].instagram} /><WallTile name="Serra Carni" category="FOOD / RETAIL SOCIAL CONTENT" image="serra-feed" className="wall-serra" href={moreSocial[1].instagram} /></div>
+    <PerspectivesCarousel />
   </section>;
 }
 

@@ -14,16 +14,37 @@
 .education-item h3 { max-width: 500px; margin-top: 11px; font-size: clamp(19px, 2vw, 28px); font-weight: 500; line-height: 1.25; letter-spacing: -.6px; }
 .index-view { display: none; }
 
-.creative-wall { grid-template-columns: 1.18fr .82fr; grid-template-rows: repeat(2, minmax(0, 530px)); gap: 18px; }
-.wall-gorillas { grid-column: 1; grid-row: 1; }
-.wall-letizia { grid-column: 2; grid-row: 1; }
-.wall-serra { grid-column: 1; grid-row: 2; }
-.wall-postural { grid-column: 2; grid-row: 2; }
+.creative-wall { grid-template-columns: repeat(2, minmax(0, 1fr)); grid-template-rows: auto; gap: clamp(16px, 2vw, 28px); margin-top: 48px; }
+.wall-gorillas, .wall-serra { grid-column: auto; grid-row: auto; aspect-ratio: 1.125 / 1; }
 .wall-gorillas, .wall-serra { background: #e8eceb; }
 .wall-gorillas img, .wall-serra img { object-fit: contain; }
 .wall-gorillas .wall-tile-shade, .wall-serra .wall-tile-shade { height: 25%; }
 .wall-gorillas .wall-tile-copy, .wall-serra .wall-tile-copy { bottom: 0; left: 0; right: 0; padding: 35px 20px 17px; background: linear-gradient(transparent, #152026d6); }
-.wall-letizia img, .wall-postural img { object-position: center 35%; }
+
+.perspectives-carousel { margin-top: clamp(64px, 7vw, 104px); overflow: hidden; }
+.carousel-heading { display: flex; align-items: end; justify-content: space-between; gap: 30px; margin-bottom: 24px; padding-bottom: 14px; border-bottom: 1px solid var(--line); }
+.carousel-kicker { display: block; color: var(--blue-dark); font-size: 9px; font-weight: 600; letter-spacing: 1.35px; }
+.carousel-heading p { margin-top: 7px; color: var(--muted); font-size: 13px; }
+.carousel-controls { display: flex; align-items: center; gap: 8px; }
+.carousel-controls>span { min-width: 58px; margin-right: 8px; color: var(--muted); font-size: 10px; letter-spacing: 1px; }
+.carousel-controls>span b { color: var(--ink); font-weight: 600; }
+.carousel-controls button { width: 38px; height: 38px; border: 1px solid #9ba7a9; border-radius: 50%; background: transparent; color: var(--ink); font-size: 17px; line-height: 1; transition: color .25s ease, background .25s ease, transform .25s ease; }
+.carousel-controls button:hover { color: white; background: var(--ink); transform: translateX(2px); }
+.carousel-controls button:first-of-type:hover { transform: translateX(-2px); }
+.carousel-controls button:focus-visible, .perspectives-track:focus-visible, .perspective-card a:focus-visible { outline: 2px solid var(--blue-dark); outline-offset: 3px; }
+.perspectives-track { display: flex; gap: clamp(14px, 1.7vw, 24px); overflow-x: auto; padding: 0 11vw 14px 0; scroll-snap-type: x mandatory; scroll-padding-inline: 0; scrollbar-width: none; overscroll-behavior-inline: contain; cursor: grab; touch-action: pan-x pan-y; user-select: none; }
+.perspectives-track::-webkit-scrollbar { display: none; }
+.perspectives-track.is-dragging { cursor: grabbing; scroll-snap-type: none; }
+.perspective-card { position: relative; flex: 0 0 clamp(290px, 39vw, 520px); aspect-ratio: 4 / 5; overflow: hidden; border-radius: 2px; background: #dbe4e5; scroll-snap-align: start; }
+.perspective-card>a, .perspective-card>div { position: absolute; inset: 0; display: block; overflow: hidden; color: white; }
+.perspective-card img { width: 100%; height: 100%; object-fit: cover; transition: transform .55s cubic-bezier(.22,1,.36,1), filter .4s ease; }
+.perspective-shade { position: absolute; inset: 42% 0 0; background: linear-gradient(transparent, #122026e8); pointer-events: none; }
+.perspective-copy { position: absolute; right: 20px; bottom: 20px; left: 20px; display: flex; flex-direction: column; align-items: flex-start; gap: 5px; transition: transform .35s ease; }
+.perspective-copy>span { font-size: 8px; font-weight: 600; letter-spacing: 1.25px; }
+.perspective-copy strong { font-size: clamp(25px, 2.35vw, 35px); font-weight: 500; line-height: 1.05; letter-spacing: -1px; }
+.perspective-copy small { margin-top: 7px; padding-bottom: 4px; border-bottom: 1px solid #ffffffa8; font-size: 10px; }
+.perspective-card:hover img { transform: scale(1.018); filter: brightness(.95); }
+.perspective-card:hover .perspective-copy { transform: translateY(-4px); }
 
 .contact { padding-top: 52px; padding-bottom: 19px; }
 .contact-layout { display: grid; grid-template-columns: minmax(0, 1.25fr) minmax(300px, .75fr); align-items: center; gap: 7%; }
@@ -47,7 +68,8 @@
 .footer-links>span { color: var(--muted); margin-left: 15px; }
 
 @media (max-width: 1050px) {
-  .creative-wall { grid-template-rows: repeat(2, minmax(0, 440px)); }
+  .creative-wall { grid-template-rows: auto; }
+  .perspective-card { flex-basis: clamp(300px, 52vw, 470px); }
   .contact-layout { gap: 4%; }
   .contact h2 { font-size: clamp(48px, 5.3vw, 66px); }
 }
@@ -90,7 +112,7 @@
   .detail-gallery { flex-direction: column; align-items: center; gap: 29px; }
   .detail-gallery .media-item { width: min(100%, 440px); max-width: none; margin: 0 !important; }
 
-  .creative-wall { display: flex; flex-direction: column; gap: 21px; margin-top: 30px; }
+  .creative-wall { display: flex; flex-direction: column; gap: 28px; margin-top: 30px; }
   .wall-tile { width: 100%; height: auto; overflow: visible; background: none; }
   .wall-tile>a { display: block; position: relative; overflow: visible; }
   .wall-tile img { display: block; width: 100%; height: auto; object-fit: contain; }
@@ -100,6 +122,16 @@
   .wall-tile-copy>span { font-size: 9px; color: var(--muted); }
   .wall-tile-copy strong, .wall-letizia .wall-tile-copy strong, .wall-postural .wall-tile-copy strong { font-size: 25px; }
   .wall-tile-copy small { font-size: 11px; border-color: var(--ink); }
+
+  .perspectives-carousel { margin-top: 58px; }
+  .carousel-heading { align-items: center; margin-bottom: 18px; }
+  .carousel-heading p { display: none; }
+  .carousel-controls>span { margin-right: 2px; }
+  .carousel-controls button { display: none; }
+  .perspectives-track { width: calc(100% + 6vw); padding-right: 12vw; gap: 14px; }
+  .perspective-card { flex-basis: min(84vw, 390px); border-radius: 2px; }
+  .perspective-copy { right: 17px; bottom: 17px; left: 17px; }
+  .perspective-copy strong { font-size: 28px; }
 
   .contact-layout { grid-template-columns: 1fr; gap: 30px; }
   .contact h2 { font-size: clamp(43px, 10vw, 69px); }
@@ -117,4 +149,10 @@
   .contact h2 { font-size: 41px; }
   .contact-connect .email { font-size: 15px; }
   .project-index a { font-size: 19px; }
+  .perspective-card { flex-basis: 86vw; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .perspectives-track { scroll-behavior: auto; }
+  .perspective-card img, .perspective-copy, .carousel-controls button { transition: none !important; }
 }

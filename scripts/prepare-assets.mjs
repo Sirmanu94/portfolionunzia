@@ -3,7 +3,7 @@ import sharp from 'sharp';
 import { readdirSync, mkdirSync, existsSync, writeFileSync } from 'node:fs';
 import { execFileSync } from 'node:child_process';
 mkdirSync('public/assets',{recursive:true});
-const photos={'nunzia.jpeg':'nunzia','32.png':'carbone-graphic','94.png':'iperboat-graphic','11.png':'letizia','102.png':'postural','riviera.png':'riviera-feed','iperboat.png':'iperboat-feed','carne.png':'serra-feed','gorilla.png':'gorillas-feed','macellaio.png':'carbone-feed'};
+const photos={'nunzia.jpeg':'nunzia','32.png':'carbone-graphic','94.png':'iperboat-graphic','11.png':'letizia','102.png':'postural','riviera.png':'riviera-feed','iperboat.png':'iperboat-feed','carne.png':'serra-feed','gorilla.png':'gorillas-feed','macellaio.png':'carbone-feed','gorilla1.jpeg':'gorilla1','gorilla2.jpeg':'gorilla2','postural1.jpeg':'postural1','arma1.jpeg':'arma1','arma2.jpeg':'arma2'};
 for(const [file,name] of Object.entries(photos)) await sharp('Materiali/'+file).resize({width:1400,withoutEnlargement:true}).webp({quality:85}).toFile('public/assets/'+name+'.webp');
 const videos=readdirSync('Materiali').filter(f=>/\.(mp4|mov)$/i.test(f));
 const manifest=[];
